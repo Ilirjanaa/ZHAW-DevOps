@@ -1,0 +1,38 @@
+version: '3.1'
+
+services:
+  db:
+    image: mariadb:10.6
+    container_name: zhaw-ili-maria-db-container
+    networks:
+      - mynetwork
+    volumes: 
+      - db_data:/var/lib/mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: Ili
+      MYSQL_PASSWORD: Ili
+      MYSQL_DATABASE: phpmyadmin
+      MYSQL_USER: Ili
+
+
+  phpmyadmin:
+    depends_on: 
+      - db
+    image: phpmyadmin:latest
+    container_name: zhaw-ili-php-container
+    networks:
+      - mynetwork
+    restart: always
+    ports:
+      - 80:80
+    environment:
+      MYSQL_PASSWORD: Ili
+      MYSQL_DATABASE: phpmyadmin
+      MYSQL_USER: Ili
+
+networks:
+  mynetwork:
+
+volumes: 
+  db_data: {}
